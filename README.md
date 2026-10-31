@@ -150,13 +150,13 @@ With `lock_accept` on, Chain runs straight through every shot, Prophecy shots in
 
 ## Clown Anchoring and Clown Context
 
-Clown Anchoring (holds Prophecy's ending at the back of the shot) and Clown Context are in [Clown Context Suite](https://github.com/roycho87/clown_context_suite); see its README for their settings and for joining the clips. Settings that work with Prophecy: Clown Context `head_frames` 39, `drop_last` 17; Clown Anchoring `tail_frames` 56, `drop_first` 17. The Anchoring frames must outnumber the Context frames.
+Clown Anchoring (holds Prophecy's ending at the back of the shot) and Clown Context are in [Clown Context Suite](https://github.com/roycho87/clown_context_suite); see its README for [their settings](https://github.com/roycho87/clown_context_suite#clown-context-and-clown-anchoring) and for [joining the clips](https://github.com/roycho87/clown_context_suite#joining-the-clips). Settings that work with Prophecy: Clown Context `head_frames` 39, `drop_last` 17; Clown Anchoring `tail_frames` 56, `drop_first` 17. The Anchoring frames must outnumber the Context frames.
 
 ## Example workflows
 
 ### Clown Prophecy example
 
-`example_workflows/sane_person_example.json` is a normal H3 Motion Context-style chain with the Clown nodes in, driven by the **Clown Chain** buttons. It only uses the Load / Save Latent nodes that Motion Context and Motion Context MultiRef both have, so it opens with no missing nodes whichever one you installed.
+[`example_workflows/sane_person_example.json`](example_workflows/sane_person_example.json) is a normal H3 Motion Context-style chain with the Clown nodes in, driven by the **Clown Chain** buttons. It only uses the Load / Save Latent nodes that Motion Context and Motion Context MultiRef both have, so it opens with no missing nodes whichever one you installed.
 
 1. Load your reference pictures and write the prompt in the **H3 Prompt IDE** node.
 2. Press **Chain** (or **Run/Re-roll** for one shot). Don't use ComfyUI's Run button.
@@ -172,13 +172,13 @@ https://github.com/user-attachments/assets/6e446991-2ac2-4c9a-b476-169040baf0ce
 
 
 
-`example_workflows/sane_clown_example.json` is the Clown Chain example with **Clown Carryover** added. The Prophecy Sampler's `previous_shot` is wired, so you can turn `continue_audio` on. It runs the same way: write the prompt, press **Chain**. Carryover adds the first clip's last frame as a scene reference on every Prophecy shot (`frame_source` = `selected clip`, `clip_number` 1). Plug its `frame` output into the Preview Image to see what it added.
+[`example_workflows/sane_clown_example.json`](example_workflows/sane_clown_example.json) is the Clown Chain example with **Clown Carryover** added. The Prophecy Sampler's `previous_shot` is wired, so you can turn `continue_audio` on. It runs the same way: write the prompt, press **Chain**. Carryover adds the first clip's last frame as a scene reference on every Prophecy shot (`frame_source` = `selected clip`, `clip_number` 1). Plug its `frame` output into the Preview Image to see what it added.
 
 The model group also has ComfyUI's **Model Attention Backend** node (comfy kitchen attention), bypassed. It does the same job as the Sage attention patch, so turn on one or the other.
 
 ### Vlog example
 
-`example_workflows/insane_example.json` makes a talking vlog from pre-split audio clips and one prompt file per shot.
+[`example_workflows/insane_example.json`](example_workflows/insane_example.json) makes a talking vlog from pre-split audio clips and one prompt file per shot.
 
 1. Set the prompt folder in **Load Text Batch From Dir** and the audio folder in **Shot Audio (one file per shot)**. One `.txt` and one audio file per shot, numbered in order.
 2. Load your two reference pictures.
