@@ -36,7 +36,7 @@ Everything shows up under the **Clown Context Suite** category.
 | `run_every` | 1–10. Prophecy only runs on shots that are multiples of this (3 = shots 3, 6, 9…). Other shots run normally. |
 | `prophecy_frames` | Length of the ending (5, 22, 39, 56, 73…). Match Clown Anchoring's `tail_frames`. |
 | `seed` | Seed for the ending only. |
-| `audio_mask` | How much the main sampler may change the shot's sound: 0 = keep it exactly, 1 = remake it. Ignored when the sound comes from Clown Force Audio with its own mask. |
+| `audio_mask` | How much the main sampler may change the shot's sound: 0 = keep it exactly, 1 = remake it. Ignored when the sound is already in the latent with its own mask (see below). |
 | `accept` | Off = render a candidate ending, show it, and stop. Run again to reroll. On = use that ending and render the shot. On with no candidate yet = render one and use it straight away. |
 | `lock_accept` | On = `accept` turns on and stays on, so every Prophecy shot runs hands-free. Off = `accept` turns off; when you turn `accept` on, it's used for one Prophecy shot and then switches itself off, so the next Prophecy shot stops for review. Turning `accept` off by hand also turns the lock off. |
 | `continue_audio` | Off by default. On = when Prophecy makes the shot's sound, it holds the previous shot's last few seconds of audio at the start, so the new sound carries on from it. Needs `previous_shot` wired. How much it holds is copied from Clown Context's `head_frames`. Skipped on the first shot or when nothing is saved yet. |
@@ -46,7 +46,7 @@ Everything shows up under the **Clown Context Suite** category.
 |---|---|
 | `previous_shot` | Optional. The same Load Latent that feeds Clown Context. Only used when `continue_audio` is on, and only loaded on Prophecy shots. |
 
-The shot's sound: if the latent going in already carries sound (from Clown Force Audio), Prophecy uses it. Otherwise it makes the shot's sound with a tiny quick render first, so the ending and the full shot share the same sound. With `continue_audio` on, that quick render continues the previous shot's sound.
+The shot's sound: if the latent going in already carries sound (put in with ComfyUI's **Concat AV Latent**), Prophecy uses it. Otherwise it makes the shot's sound with a tiny quick render first, so the ending and the full shot share the same sound. With `continue_audio` on, that quick render continues the previous shot's sound.
 
 ## Clown Carryover
 
@@ -183,6 +183,8 @@ The model group also has ComfyUI's **Model Attention Backend** node (comfy kitch
 1. Set the prompt folder in **Load Text Batch From Dir** and the audio folder in **Shot Audio (one file per shot)**. One `.txt` and one audio file per shot, numbered in order.
 2. Load your two reference pictures.
 3. Set the batch count to the number of shots and run. With the counter on `increment` and `lock_accept` on, every shot renders in one go.
+
+Each shot's audio goes into the latent with native nodes: **VAE Encode Audio** (H3 audio VAE) → **Set Latent Noise Mask** (a Solid Mask at 0, so the sampler keeps the sound exactly) → **Concat AV Latent** (with the Reference to Video latent). If the audio is shorter than the shot, the model makes up sound for the rest.
 
 Video Settings is set to 8-second shots (192 frames), Clown Context to 39 / drop_last 17 to match a 39-frame audio overlap, and Prophecy to run every 2 shots.
 

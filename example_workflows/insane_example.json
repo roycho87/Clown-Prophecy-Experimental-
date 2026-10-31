@@ -1,8 +1,8 @@
 {
  "id": "90cd6834-46d4-436a-aa13-42b2ee5d4eb1",
  "revision": 0,
- "last_node_id": 8924,
- "last_link_id": 40604,
+ "last_node_id": 8928,
+ "last_link_id": 40607,
  "nodes": [
   {
    "id": 5,
@@ -3457,63 +3457,6 @@
    "title": "Shot Audio (one file per shot)"
   },
   {
-   "id": 8923,
-   "type": "H3ClownForceAudio",
-   "pos": [
-    4012.4468401834683,
-    -420
-   ],
-   "size": [
-    320,
-    130
-   ],
-   "flags": {},
-   "order": 0,
-   "mode": 0,
-   "inputs": [
-    {
-     "name": "latent",
-     "type": "LATENT",
-     "link": 40600
-    },
-    {
-     "name": "audio_vae",
-     "type": "VAE",
-     "link": 40601
-    },
-    {
-     "name": "audio",
-     "type": "AUDIO",
-     "link": 40602
-    },
-    {
-     "name": "audio_mask",
-     "type": "FLOAT",
-     "link": null,
-     "widget": {
-      "name": "audio_mask"
-     }
-    }
-   ],
-   "outputs": [
-    {
-     "name": "av_latent",
-     "type": "LATENT",
-     "links": [
-      40603,
-      40604
-     ]
-    }
-   ],
-   "properties": {
-    "Node name for S&R": "H3ClownForceAudio"
-   },
-   "widgets_values": [
-    0.0
-   ],
-   "title": "Clown Force Audio"
-  },
-  {
    "id": 8924,
    "type": "Note",
    "pos": [
@@ -3536,6 +3479,202 @@
    ],
    "color": "#432",
    "bgcolor": "#653"
+  },
+  {
+   "id": 8925,
+   "type": "VAEEncodeAudio",
+   "pos": [
+    4012.4468401834683,
+    -420
+   ],
+   "size": [
+    260,
+    50
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "title": "Encode shot audio",
+   "inputs": [
+    {
+     "name": "audio",
+     "localized_name": "audio",
+     "type": "AUDIO",
+     "link": 40602
+    },
+    {
+     "name": "vae",
+     "localized_name": "vae",
+     "type": "VAE",
+     "link": 40601
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "localized_name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      40605
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAEEncodeAudio"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 8926,
+   "type": "SolidMask",
+   "pos": [
+    4012.4468401834683,
+    -340
+   ],
+   "size": [
+    260,
+    110
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "title": "Mask 0 = keep the sound exactly",
+   "inputs": [
+    {
+     "name": "value",
+     "localized_name": "value",
+     "type": "FLOAT",
+     "widget": {
+      "name": "value"
+     },
+     "link": null
+    },
+    {
+     "name": "width",
+     "localized_name": "width",
+     "type": "INT",
+     "widget": {
+      "name": "width"
+     },
+     "link": null
+    },
+    {
+     "name": "height",
+     "localized_name": "height",
+     "type": "INT",
+     "widget": {
+      "name": "height"
+     },
+     "link": null
+    }
+   ],
+   "outputs": [
+    {
+     "name": "MASK",
+     "localized_name": "MASK",
+     "type": "MASK",
+     "links": [
+      40606
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "SolidMask"
+   },
+   "widgets_values": [
+    0.0,
+    512,
+    512
+   ]
+  },
+  {
+   "id": 8927,
+   "type": "SetLatentNoiseMask",
+   "pos": [
+    4292.446840183468,
+    -420
+   ],
+   "size": [
+    240,
+    50
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "title": "Lock the sound",
+   "inputs": [
+    {
+     "name": "samples",
+     "localized_name": "samples",
+     "type": "LATENT",
+     "link": 40605
+    },
+    {
+     "name": "mask",
+     "localized_name": "mask",
+     "type": "MASK",
+     "link": 40606
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "localized_name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      40607
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "SetLatentNoiseMask"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 8928,
+   "type": "LTXVConcatAVLatent",
+   "pos": [
+    4292.446840183468,
+    -330
+   ],
+   "size": [
+    260,
+    50
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "title": "Concat AV Latent (shot audio into the latent)",
+   "inputs": [
+    {
+     "name": "video_latent",
+     "localized_name": "video_latent",
+     "type": "LATENT",
+     "link": 40600
+    },
+    {
+     "name": "audio_latent",
+     "localized_name": "audio_latent",
+     "type": "LATENT",
+     "link": 40607
+    }
+   ],
+   "outputs": [
+    {
+     "name": "latent",
+     "localized_name": "latent",
+     "type": "LATENT",
+     "links": [
+      40603,
+      40604
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "LTXVConcatAVLatent"
+   },
+   "widgets_values": []
   }
  ],
  "links": [
@@ -4023,7 +4162,7 @@
    40600,
    5,
    1,
-   8923,
+   8928,
    0,
    "LATENT"
   ],
@@ -4031,7 +4170,7 @@
    40601,
    400,
    0,
-   8923,
+   8925,
    1,
    "VAE"
   ],
@@ -4039,13 +4178,13 @@
    40602,
    8922,
    0,
-   8923,
-   2,
+   8925,
+   0,
    "AUDIO"
   ],
   [
    40603,
-   8923,
+   8928,
    0,
    8892,
    7,
@@ -4053,10 +4192,34 @@
   ],
   [
    40604,
-   8923,
+   8928,
    0,
    8898,
    0,
+   "LATENT"
+  ],
+  [
+   40605,
+   8925,
+   0,
+   8927,
+   0,
+   "LATENT"
+  ],
+  [
+   40606,
+   8926,
+   0,
+   8927,
+   1,
+   "MASK"
+  ],
+  [
+   40607,
+   8927,
+   0,
+   8928,
+   1,
    "LATENT"
   ]
  ],
@@ -4147,11 +4310,11 @@
   },
   {
    "id": 8,
-   "title": "Shot audio -> Clown Force Audio",
+   "title": "Shot audio -> Concat AV Latent (native nodes)",
    "bounding": [
     3542.4468401834683,
     -480,
-    810,
+    900,
     280
    ],
    "color": "#3f789e",
