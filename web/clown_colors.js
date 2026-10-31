@@ -3,7 +3,6 @@
 import { app } from "../../scripts/app.js";
 
 const CLOWN_NODES = new Set([
-    "H3BlockTailAnchorExperimental",
     "H3ClownProphecySampler",
     "H3ClownProphecyPrompt",
     "H3ClownCarryover",

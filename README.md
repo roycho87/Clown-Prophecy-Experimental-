@@ -6,7 +6,7 @@ ComfyUI nodes for MiniMax H3 chains that render a clean ending for each shot bef
 
 ## Needs Clown Context Suite
 
-Install [Clown Context Suite](https://github.com/roycho87/clown_context_suite) too. The workflows here use its **Clown Context**, **Clown Shot Counter** and **Clown Chain** nodes. If your copy of Clown Context Suite is older and still has the Prophecy nodes in it, update it (`git pull`) so the two packs don't clash.
+Install [Clown Context Suite](https://github.com/roycho87/clown_context_suite) too. The workflows here use its **Clown Context**, **Clown Anchoring**, **Clown Shot Counter** and **Clown Chain** nodes. If your copy of Clown Context Suite is older and still has the Prophecy nodes in it, update it (`git pull`) so the two packs don't clash.
 
 ## Credits
 
@@ -24,7 +24,6 @@ Do this every two shots or so and the quality never drops far enough to notice. 
 |---|---|
 | **Clown Prophecy Sampler** | Renders the clean ending for the shot, before the shot exists. |
 | **Clown Prophecy Prompt** | How the ending is worded: an LLM (Ollama, LM Studio…) rewrites the prompt so it only describes the ending, your own text, or the shot prompt as is. |
-| **Clown Anchoring** | Holds a source's frames (and audio) at the end of this shot. Plug Clown Prophecy's ending into `next_shot`. |
 | **Clown Carryover** | On Prophecy shots, adds a frame from an earlier shot as one more reference picture, so the background and layout stay put. Can turn the frame into a canny, depth or pose map first. |
 
 Everything shows up under the **Clown Context Suite** category.
@@ -149,40 +148,9 @@ Don't press **Approve** or **Chain** right after a candidate: both move to the n
 
 With `lock_accept` on, Chain runs straight through every shot, Prophecy shots included.
 
-## Clown Anchoring (and Clown Context)
+## Clown Anchoring and Clown Context
 
-Both copy real latents into the shot at matching block positions and mask them so the sampler keeps them. Frame counts go 5, 22, 39, 56, 73… (17n + 5); the drop settings go in steps of 17.
-
-- `head_frames` (Context) is the overlap with the previous shot. If you use pre-split audio, set it to the audio overlap (e.g. 39).
-- `drop_last` / `drop_first` trim the held frames from either end.
-- `hold_audio` holds the audio under the held frames too.
-- `shot_number` / `first_shot`: both nodes take an optional `shot_number` from the Clown Shot Counter. On the first shot they don't load their source at all and pass the latent through. Handy when Anchoring's `next_shot` comes from a Load Latent of a clip that isn't made yet. Leave it unplugged and they work as before.
-
-**Recommended settings:**
-
-| Node | Frames | Drop |
-|---|---|---|
-| **Clown Context** | `head_frames` 39 | `drop_last` 17 |
-| **Clown Anchoring** | `tail_frames` 56 | `drop_first` 17 |
-
-Rule that works:
-- The Anchoring frames must outnumber the Context frames.
-
-### Joining the clips
-
-Each clip is saved whole (all of its frames, overlap included), so trim them when you join them. `drop_last` doesn't remove the overlap, it only changes what's in it. With Clown Context at 39, `drop_last` 17:
-
-- The new shot's frames 0-21 are exact copies of the previous shot's frames 153-174 (the held part).
-- The new shot's frames 22-38 are freshly made, but they cover the same moment as the previous shot's frames 175-191 (the dropped part).
-
-So the two clips still share 39 frames of time: 22 identical, and 17 that are two different takes of the same moment. Butted together untrimmed, that moment plays twice. Cut so the join lands inside the identical part, then it's seamless:
-
-1. **Cut the last 39 frames off every clip except the last one** (the default). The previous clip ends on frame 152 and the next one starts on its frame 0, which is an exact copy of frame 153.
-2. **Cut the last 17 frames off each clip and the first 22 off the next.** The previous clip ends on frame 174 and the next one carries on from its frame 22. Use this if the start of each clip has something you don't want to keep.
-
-Don't cut the first 39 frames off the next clip instead: that joins two different takes of the same moment and can show a small jump. The last clip is always kept whole. For other settings, the overlap is `head_frames` and the identical part is `head_frames` minus the drops.
-
-**[Seamless Video Combiner](https://github.com/roycho87/seamless_video_combiner)** does the join for you, sound included (with a short audio crossfade at each seam). `example_workflows/sane_clown_combiner.json` is set up for the Clown examples: 10 clips, 8 seconds (192 frames) each, overlap 39, cutting the end of each clip (End pair: End Overlap 39, End Join 0). For way 2, turn on **Use Beginning pair** (Beginning Overlap 39, Beginning Join 22). Copy the clips from `output/h3_ref2va/` into ComfyUI's `input` folder (or pick them in the ten Load Video nodes), set the number of videos and the duration if yours differ, and run.
+Clown Anchoring (holds Prophecy's ending at the back of the shot) and Clown Context are in [Clown Context Suite](https://github.com/roycho87/clown_context_suite); see its README for their settings and for joining the clips. Settings that work with Prophecy: Clown Context `head_frames` 39, `drop_last` 17; Clown Anchoring `tail_frames` 56, `drop_first` 17. The Anchoring frames must outnumber the Context frames.
 
 ## Example workflows
 
