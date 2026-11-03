@@ -1,6 +1,6 @@
 """Clown Carryover.
 
-On the shots Clown Prophecy runs, adds a frame from an earlier shot (the previous shot or a chosen clip; its last or
+On the shots Geiru Prophecy runs, adds a frame from an earlier shot (the previous shot or a chosen clip; its last or
 first frame; optionally turned into a canny / depth / pose map) as one more reference picture, with prompt lines saying
 what it shows. Sits after MiniMax H3 Reference to Video: positive + latent in, positive +
 latent out (the latent passes through). The Prophecy Sampler sees the extra picture in the conditioning and adds the
@@ -11,7 +11,7 @@ already there it can't add one and passes everything through.
 """
 import math
 
-CATEGORY = "Clown Context Suite"
+CATEGORY = "Geiru Context Suite"
 FPS = 24
 MAX_PICTURES = 9
 CANVAS_MULTIPLE = 32
@@ -196,7 +196,7 @@ def _refs_of(conditioning):
 
 
 def _items_from_blocks(vae, blocks):
-    """What Reference to Video showed the text encoder, rebuilt from the reference latents (as Clown Prophecy does)."""
+    """What Reference to Video showed the text encoder, rebuilt from the reference latents (as Geiru Prophecy does)."""
     items = []
     for b in blocks or []:
         kind = b.get("kind")
@@ -219,7 +219,7 @@ def _items_from_blocks(vae, blocks):
 
 
 class H3ClownCarryover:
-    """A frame from an earlier shot as an extra reference picture, on Clown Prophecy's shots."""
+    """A frame from an earlier shot as an extra reference picture, on Geiru Prophecy's shots."""
 
     CATEGORY = CATEGORY
     RETURN_TYPES = ("CONDITIONING", "LATENT", "IMAGE")
@@ -227,7 +227,7 @@ class H3ClownCarryover:
     OUTPUT_TOOLTIPS = ("Positive with the extra picture.", "Latent, passed through.",
                        "The picture that was added (the frame or its map) - for a Preview Image. Nothing on shots it's off.")
     FUNCTION = "carry"
-    DESCRIPTION = ("Wire MiniMax H3 Reference to Video's positive and latent through this. On the shots Clown Prophecy runs, "
+    DESCRIPTION = ("Wire MiniMax H3 Reference to Video's positive and latent through this. On the shots Geiru Prophecy runs, "
                    "a frame of the previous shot or a chosen clip (or optional_frame if plugged in) is added as the next reference picture, with a "
                    "line in the prompt saying it shows the scene and layout. The Prophecy Sampler picks it up for the "
                    "ending too. bypass / run_every are copied from the Prophecy Sampler when you queue.")
@@ -243,8 +243,8 @@ class H3ClownCarryover:
                 "prompt": ("STRING", {"forceInput": True, "tooltip": "The same prompt that goes into Reference to Video."}),
                 "enabled": ("BOOLEAN", {"default": True, "label_on": "on - add the frame as a reference",
                                         "label_off": "off - pass through"}),
-                "bypass": ("BOOLEAN", {"default": False, "tooltip": "Copied from the Clown Prophecy Sampler when you queue."}),
-                "run_every": ("INT", {"default": 1, "min": 1, "max": 10, "tooltip": "Copied from the Clown Prophecy Sampler when you queue."}),
+                "bypass": ("BOOLEAN", {"default": False, "tooltip": "Copied from the Geiru Prophecy Sampler when you queue."}),
+                "run_every": ("INT", {"default": 1, "min": 1, "max": 10, "tooltip": "Copied from the Geiru Prophecy Sampler when you queue."}),
                 "first_shot": ("INT", {"default": 1, "min": -9999, "max": 99999,
                                        "tooltip": "On this shot (or earlier) there's no previous shot: off."}),
                 "carry_lighting": ("BOOLEAN", {"default": False, "label_on": "lighting: follow it", "label_off": "lighting: free",
@@ -271,7 +271,7 @@ class H3ClownCarryover:
                                    "tooltip": "Which frame of the chosen shot to use. Ignored when optional_frame is plugged in."}),
             },
             "optional": {
-                "shot_number": ("INT", {"forceInput": True, "tooltip": "From Clown Shot Counter (same as Prophecy)."}),
+                "shot_number": ("INT", {"forceInput": True, "tooltip": "From Geiru Shot Counter (same as Prophecy)."}),
                 "previous_shot": ("LATENT", {"lazy": True, "tooltip": "The previous shot's latent (H3 Motion Context Load Latent). "
                                                                      "Its frame is decoded here and used as the picture."}),
                 "optional_frame": ("IMAGE", {"lazy": True, "tooltip": "Optional: your own picture to use instead of the previous "

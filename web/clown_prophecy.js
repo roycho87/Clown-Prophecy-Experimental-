@@ -1,8 +1,8 @@
-// Clown Prophecy Sampler helpers.
+// Geiru Prophecy Sampler helpers.
 // lock_accept: on = accept on and stays on. off = accept off; an accept turned on by hand is used for one Prophecy shot,
 // then switches itself off. Turning accept off by hand unlocks.
-// A Prophecy candidate (accept off) stops a running Chain (Motion Context's or Clown Chain), so it doesn't move past an
-// unsaved shot. "increment after accept" on the Clown Shot Counter (Clown Context Suite) bumps it after an accepted run.
+// A Prophecy candidate (accept off) stops a running Chain (Motion Context's or Geiru Chain), so it doesn't move past an
+// unsaved shot. "increment after accept" on the Geiru Shot Counter (Geiru Context Suite) bumps it after an accepted run.
 import { app } from "../../scripts/app.js";
 
 function counterFor(node) {
@@ -55,7 +55,7 @@ app.registerExtension({
             nodeType.prototype.onNodeCreated = function () {
                 const r = onCreated?.apply(this, arguments);
                 const node = this, acc = W(node, "accept"), lock = W(node, "lock_accept");
-                // continue_audio_frames <- Clown Context head_frames (hidden)
+                // continue_audio_frames <- Geiru Context head_frames (hidden)
                 const ctx = () => {
                     const all = allNodes().filter((n) => /ClownContext/.test(n.comfyClass || n.type || ""));
                     return all.length ? all[0] : null;

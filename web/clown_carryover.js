@@ -1,4 +1,4 @@
-// Clown Carryover follows the Clown Prophecy Sampler: bypass and run_every are copied from it when you
+// Clown Carryover follows the Geiru Prophecy Sampler: bypass and run_every are copied from it when you
 // queue, and hidden. If the node isn't wired to a Prophecy Sampler, the one Prophecy Sampler in the graph
 // is used; with none (or several, unwired) the node's own values are used.
 import { app } from "../../scripts/app.js";

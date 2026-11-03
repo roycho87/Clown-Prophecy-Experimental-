@@ -1,11 +1,11 @@
 """
-Clown Prophecy (Experimental) for MiniMax H3
+Geiru Prophecy (Experimental) for MiniMax H3
 --------------------------------------------
-Moved out of Clown Context Suite. Needs Clown Context Suite installed for Clown Context, Clown Anchoring, Clown Shot
-Counter and Clown Chain.
+Moved out of Geiru Context Suite. Needs Geiru Context Suite installed for Geiru Context, Geiru Anchoring, Clown Shot
+Counter and Geiru Chain.
 
-    Clown Prophecy Sampler  renders a clean ending for the shot before the shot exists
-    Clown Prophecy Prompt   how the ending is worded (Ollama rewrite, manual, or as is)
+    Geiru Prophecy Sampler  renders a clean ending for the shot before the shot exists
+    Geiru Prophecy Prompt   how the ending is worded (Ollama rewrite, manual, or as is)
 
 Audio runs at 40 Hz against 24 fps video, so F frames = round(F * 40/24) audio steps.
 """
@@ -22,7 +22,7 @@ except Exception:  # very old ComfyUI
     NestedTensor = None
 
 
-CATEGORY = "Clown Context Suite"
+CATEGORY = "Geiru Context Suite"
 
 FRAME_PER_TOKEN = (1, 4, 4, 4, 4)
 FPS = 24.0
@@ -130,7 +130,7 @@ def _video_audio(latent, who):
 # --------------------------------------------------------------------------- color match to a chosen clip
 
 
-# --------------------------------------------------------------------------- Clown Prophecy Sampler
+# --------------------------------------------------------------------------- Geiru Prophecy Sampler
 PROPHECY_LLM_RULES = """You edit MiniMax H3 video prompts. A separate short clip will be generated that shows ONLY THE LAST
 {secs:.2f} SECONDS of a longer video. {source}
 
@@ -387,7 +387,7 @@ class H3ClownProphecyPrompt:
     RETURN_TYPES = ("PROPHECY_PROMPT",)
     RETURN_NAMES = ("prophecy_prompt",)
     FUNCTION = "build"
-    DESCRIPTION = ("Plug into the Clown Prophecy Sampler. ollama: an LLM (Ollama, LM Studio or any OpenAI-compatible server) rewrites the prompt's summary and "
+    DESCRIPTION = ("Plug into the Geiru Prophecy Sampler. ollama: an LLM (Ollama, LM Studio or any OpenAI-compatible server) rewrites the prompt's summary and "
                    "detailed_description so they describe only the ending. manual: your two boxes replace them. "
                    "as is: the shot prompt is used unchanged.")
 
@@ -420,7 +420,7 @@ class H3ClownProphecyPrompt:
 
 
 class H3ClownProphecySampler:
-    """Generates a clean ending for the shot before the shot exists, for Clown Anchoring to pin."""
+    """Generates a clean ending for the shot before the shot exists, for Geiru Anchoring to pin."""
 
     CATEGORY = CATEGORY
     RETURN_TYPES = ("LATENT", "IMAGE", "STRING", "AUDIO", "STRING", "LATENT")
@@ -431,7 +431,7 @@ class H3ClownProphecySampler:
         "Makes the ending of this shot first: a fresh clip of the last prophecy_frames frames, built from Reference "
         "To Video's conditioning and latent (same pictures, same size, same length math). "
         "Accept off: render a candidate, show it, STOP the rest of the workflow. Run again to reroll. "
-        "Accept on: use the saved candidate exactly and run the rest, with Clown Anchoring pinning it. "
+        "Accept on: use the saved candidate exactly and run the rest, with Geiru Anchoring pinning it. "
         "Sound: if the latent already carries sound (e.g. forced audio through LTXV Concat AV Latent), that sound is used "
         "and passed on with its own mask; otherwise the shot's sound is pre-rendered with a tiny H3 render."
     )
@@ -450,13 +450,13 @@ class H3ClownProphecySampler:
                 "latent": ("LATENT", {"tooltip": "Reference To Video's LATENT output (gives the size and shot length)."}),
                 "bypass": ("BOOLEAN", {"default": False, "label_on": "BYPASSED - workflow runs normally",
                                        "label_off": "prophecy on",
-                                       "tooltip": "On = Clown Prophecy does nothing: no ending, the main sampler makes its own sound."}),
+                                       "tooltip": "On = Geiru Prophecy does nothing: no ending, the main sampler makes its own sound."}),
                 "run_every": ("INT", {"default": 1, "min": 1, "max": 10, "step": 1,
-                                      "tooltip": "Run Clown Prophecy only on shots that are multiples of this (3 = shots 3, 6, 9...). "
+                                      "tooltip": "Run Geiru Prophecy only on shots that are multiples of this (3 = shots 3, 6, 9...). "
                                                  "Other shots run normally. 1 = every shot."}),
-                "shot_number": ("INT", {"forceInput": True, "tooltip": "From Clown Shot Counter (in a Motion Context workflow, set it to 'follow motion context')."}),
+                "shot_number": ("INT", {"forceInput": True, "tooltip": "From Geiru Shot Counter (in a Motion Context workflow, set it to 'follow motion context')."}),
                 "prophecy_frames": ("INT", {"default": 56, "min": 5, "max": 4096, "step": 17,
-                                            "tooltip": "Length of the ending (5, 22, 39, 56, 73 ...). Match Clown Anchoring's tail_frames."}),
+                                            "tooltip": "Length of the ending (5, 22, 39, 56, 73 ...). Match Geiru Anchoring's tail_frames."}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffffffffffff, "control_after_generate": "fixed"}),
                 "audio_mask": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1.0, "step": 0.05,
                                          "tooltip": "Noise mask on the audio_latent output for the main sampler. "
@@ -475,13 +475,13 @@ class H3ClownProphecySampler:
                                                           "from it. Skipped when there's no previous shot (e.g. the first shot)."}),
                 "continue_audio_frames": ("INT", {"default": 39, "min": 5, "max": 4096,
                                                   "tooltip": "How many frames of the previous shot's sound to hold (copied from "
-                                                             "Clown Context's head_frames when you queue)."}),
+                                                             "Geiru Context's head_frames when you queue)."}),
                 "prophecy_latent_folder": ("STRING", {"default": "clown_prophecy",
                                                       "tooltip": "Folder in output/ for the candidate and accepted endings."}),
             },
             "optional": {
-                "prophecy_prompt": ("PROPHECY_PROMPT", {"lazy": True, "tooltip": "From Clown Prophecy Prompt. Empty = the shot prompt as is."}),
-                "previous_shot": ("LATENT", {"lazy": True, "tooltip": "The previous shot's latent (the same Load Latent as Clown Context). "
+                "prophecy_prompt": ("PROPHECY_PROMPT", {"lazy": True, "tooltip": "From Geiru Prophecy Prompt. Empty = the shot prompt as is."}),
+                "previous_shot": ("LATENT", {"lazy": True, "tooltip": "The previous shot's latent (the same Load Latent as Geiru Context). "
                                                                      "Its sound is continued when continue_audio is on. Only loaded on Prophecy shots."}),
             },
         }
@@ -576,7 +576,7 @@ class H3ClownProphecySampler:
         from comfy_execution.graph import ExecutionBlocker
         from comfy_extras.nodes_minimax_h3 import _empty_av_latent, _encode_ref_audio, temporal_shape
         from comfy_extras.nodes_lt import LTXVConcatAVLatent
-        who = "Clown Prophecy Sampler"
+        who = "Geiru Prophecy Sampler"
         pp = prophecy_prompt or {"mode": "as is"}
         shot = int(shot_number)
         parts_in, _, vi_in, _ = _video_audio(latent, who)
@@ -845,6 +845,6 @@ NODE_CLASS_MAPPINGS = {
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "H3ClownProphecySampler": "Clown Prophecy Sampler",
-    "H3ClownProphecyPrompt": "Clown Prophecy Prompt",
+    "H3ClownProphecySampler": "Geiru Prophecy Sampler",
+    "H3ClownProphecyPrompt": "Geiru Prophecy Prompt",
 }
