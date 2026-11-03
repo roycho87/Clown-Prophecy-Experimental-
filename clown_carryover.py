@@ -1,4 +1,4 @@
-"""Clown Carryover.
+"""Geiru Carryover.
 
 On the shots Geiru Prophecy runs, adds a frame from an earlier shot (the previous shot or a chosen clip; its last or
 first frame; optionally turned into a canny / depth / pose map) as one more reference picture, with prompt lines saying
@@ -83,7 +83,7 @@ def _make_map(kind, img):
     name = {"depth": "DepthAnythingV2Preprocessor", "pose": "DWPreprocessor"}[kind]
     cls = nodes.NODE_CLASS_MAPPINGS.get(name)
     if cls is None:
-        raise RuntimeError(f"Clown Carryover: the {kind} option needs the comfyui_controlnet_aux pack ({name} not found). "
+        raise RuntimeError(f"Geiru Carryover: the {kind} option needs the comfyui_controlnet_aux pack ({name} not found). "
                            "Install 'ComfyUI's ControlNet Auxiliary Preprocessors' from ComfyUI Manager and restart; its "
                            "model downloads by itself the first time. canny works without it.")
     h, w = int(img.shape[1]), int(img.shape[2])
@@ -313,7 +313,7 @@ class H3ClownCarryover:
               frame_position="last frame"):
         import comfy.utils
         import node_helpers
-        who = "Clown Carryover"
+        who = "Geiru Carryover"
         on, why = self._active(enabled, bypass, run_every, first_shot, shot_number)
         if not on:
             print(f"[{who}] off: {why} - passed through")
@@ -375,4 +375,4 @@ class H3ClownCarryover:
 
 
 NODE_CLASS_MAPPINGS = {"H3ClownCarryover": H3ClownCarryover}
-NODE_DISPLAY_NAME_MAPPINGS = {"H3ClownCarryover": "Clown Carryover"}
+NODE_DISPLAY_NAME_MAPPINGS = {"H3ClownCarryover": "Geiru Carryover"}

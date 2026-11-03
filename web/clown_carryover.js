@@ -1,4 +1,4 @@
-// Clown Carryover follows the Geiru Prophecy Sampler: bypass and run_every are copied from it when you
+// Geiru Carryover follows the Geiru Prophecy Sampler: bypass and run_every are copied from it when you
 // queue, and hidden. If the node isn't wired to a Prophecy Sampler, the one Prophecy Sampler in the graph
 // is used; with none (or several, unwired) the node's own values are used.
 import { app } from "../../scripts/app.js";
@@ -45,7 +45,7 @@ app.registerExtension({
                 w.computeSize = () => [0, -4];
                 w.draw = () => {};
             }
-            // Clown Carryover: latent_folder follows the Load Latent wired into previous_shot
+            // Geiru Carryover: latent_folder follows the Load Latent wired into previous_shot
             const lf = node.widgets?.find((x) => x.name === "latent_folder");
             if (lf) {
                 const prevLf = lf.serializeValue;
@@ -65,7 +65,7 @@ app.registerExtension({
                 lf.computeSize = () => [0, -4];
                 lf.draw = () => {};
             }
-            // Clown Carryover: clip_number only matters for frame_source = selected clip
+            // Geiru Carryover: clip_number only matters for frame_source = selected clip
             const fs = node.widgets?.find((x) => x.name === "frame_source");
             const cn = node.widgets?.find((x) => x.name === "clip_number");
             if (fs && cn) {
@@ -83,7 +83,7 @@ app.registerExtension({
                 node.onConfigure = function () { const out = prevConf?.apply(this, arguments); sync(); return out; };
                 sync();
             }
-            // Clown Carryover: map options ignore lighting (and positions, for pose)
+            // Geiru Carryover: map options ignore lighting (and positions, for pose)
             const ret = node.widgets?.find((x) => x.name === "retention");
             const lit = node.widgets?.find((x) => x.name === "carry_lighting");
             const posw = node.widgets?.find((x) => x.name === "carry_positions");

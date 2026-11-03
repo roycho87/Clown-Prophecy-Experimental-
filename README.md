@@ -26,7 +26,7 @@ Do this every two shots or so and the quality never drops far enough to notice. 
 |---|---|
 | **Geiru Prophecy Sampler** | Renders the clean ending for the shot, before the shot exists. |
 | **Geiru Prophecy Prompt** | How the ending is worded: an LLM (Ollama, LM Studio…) rewrites the prompt so it only describes the ending, your own text, or the shot prompt as is. |
-| **Clown Carryover** | On Prophecy shots, adds a frame from an earlier shot as one more reference picture, so the background and layout stay put. Can turn the frame into a canny, depth or pose map first. |
+| **Geiru Carryover** | On Prophecy shots, adds a frame from an earlier shot as one more reference picture, so the background and layout stay put. Can turn the frame into a canny, depth or pose map first. |
 
 Everything shows up under the **Geiru Context Suite** category.
 
@@ -50,7 +50,7 @@ Everything shows up under the **Geiru Context Suite** category.
 
 The shot's sound: if the latent going in already carries sound (put in with ComfyUI's **Concat AV Latent**), Prophecy uses it. Otherwise it makes the shot's sound with a tiny quick render first, so the ending and the full shot share the same sound. With `continue_audio` on, that quick render continues the previous shot's sound.
 
-## Clown Carryover
+## Geiru Carryover
 
 Sits between **MiniMax H3 Reference to Video** and the samplers: positive and latent in, positive and latent out. On the shots Prophecy runs, it takes a frame from an earlier shot, adds it as the next `<Picture N>`, and adds lines to the prompt saying it's the scene layout reference. The Prophecy Sampler sees the extra picture too, so the ending is made with it. On other shots it passes everything through. `bypass` and `run_every` are copied from the Prophecy Sampler when you queue (hidden on the node).
 
@@ -158,7 +158,7 @@ Geiru Anchoring (holds Prophecy's ending at the back of the shot) and Geiru Cont
 
 ### Geiru Prophecy example
 
-[`example_workflows/sane_person_example.json`](example_workflows/sane_person_example.json) is a normal H3 Motion Context-style chain with the Clown nodes in, driven by the **Geiru Chain** buttons. It only uses the Load / Save Latent nodes that Motion Context and Motion Context MultiRef both have, so it opens with no missing nodes whichever one you installed.
+[`example_workflows/sane_person_example.json`](example_workflows/sane_person_example.json) is a normal H3 Motion Context-style chain with the Geiru nodes in, driven by the **Geiru Chain** buttons. It only uses the Load / Save Latent nodes that Motion Context and Motion Context MultiRef both have, so it opens with no missing nodes whichever one you installed.
 
 1. Load your reference pictures and write the prompt in the **H3 Prompt IDE** node.
 2. Press **Chain** (or **Run/Re-roll** for one shot). Don't use ComfyUI's Run button.
@@ -166,7 +166,7 @@ Geiru Anchoring (holds Prophecy's ending at the back of the shot) and Geiru Cont
 
 Keep Load Latent, Save Latent and Geiru Chain inside their group.
 
-### Clown Carryover example
+### Geiru Carryover example
 
 A 10-clip test made with the sane_clown_example workflow. The sound was replaced afterwards.
 
@@ -174,7 +174,7 @@ https://github.com/user-attachments/assets/6e446991-2ac2-4c9a-b476-169040baf0ce
 
 
 
-[`example_workflows/sane_clown_example.json`](example_workflows/sane_clown_example.json) is the Geiru Chain example with **Clown Carryover** added. The Prophecy Sampler's `previous_shot` is wired, so you can turn `continue_audio` on. It runs the same way: write the prompt, press **Chain**. Carryover adds the first clip's last frame as a scene reference on every Prophecy shot (`frame_source` = `selected clip`, `clip_number` 1). Plug its `frame` output into the Preview Image to see what it added.
+[`example_workflows/sane_clown_example.json`](example_workflows/sane_clown_example.json) is the Geiru Chain example with **Geiru Carryover** added. The Prophecy Sampler's `previous_shot` is wired, so you can turn `continue_audio` on. It runs the same way: write the prompt, press **Chain**. Carryover adds the first clip's last frame as a scene reference on every Prophecy shot (`frame_source` = `selected clip`, `clip_number` 1). Plug its `frame` output into the Preview Image to see what it added.
 
 The model group also has ComfyUI's **Model Attention Backend** node (comfy kitchen attention), bypassed. It does the same job as the Sage attention patch, so turn on one or the other.
 
@@ -200,7 +200,7 @@ Video Settings is set to 8-second shots (192 frames), Geiru Context to 39 / drop
 - [ComfyUI-Custom-Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts)
 - [ComfyUI-Easy-Use](https://github.com/yolain/ComfyUI-Easy-Use)
 - [ComfyMath](https://github.com/evanspearman/ComfyMath)
-- [ComfyUI's ControlNet Auxiliary Preprocessors](https://github.com/Fannovel16/comfyui_controlnet_aux) (only for Clown Carryover's depth / pose options)
+- [ComfyUI's ControlNet Auxiliary Preprocessors](https://github.com/Fannovel16/comfyui_controlnet_aux) (only for Geiru Carryover's depth / pose options)
 - Load Text Batch From Dir, Load Audio Batch From Dir, LoadImageCrop, VideoResolutionNode, and the MiniMax low-VRAM nodes
 
 Geiru Prophecy Prompt in `ollama` mode needs a local LLM server: [Ollama](https://ollama.com) (`http://127.0.0.1:11434`), [LM Studio](https://lmstudio.ai) (`http://127.0.0.1:1234`), or any other OpenAI-compatible server. Put its address in `ollama_url`.

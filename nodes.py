@@ -685,7 +685,7 @@ class H3ClownProphecySampler:
         notes = []
         carry = _carryover_lines(conditioning)
         if carry:
-            notes.append("Clown Carryover's picture used (its prompt lines added)")
+            notes.append("Geiru Carryover's picture used (its prompt lines added)")
         if mode == "as is":
             cond = conditioning
             new_prompt = _add_carryover_lines(pp.get("prompt") or "(shot prompt as is)", carry)
@@ -775,12 +775,12 @@ class H3ClownProphecySampler:
 
 
 def _carryover_lines(conditioning):
-    """The prompt lines Clown Carryover added with its extra reference picture ({} when it didn't)."""
+    """The prompt lines Geiru Carryover added with its extra reference picture ({} when it didn't)."""
     for c in conditioning or []:
         if len(c) > 1 and isinstance(c[1], dict):
             if c[1].get("clown_carryover_lines"):
                 return c[1]["clown_carryover_lines"]
-            if c[1].get("clown_carryover_line"):  # older Clown Carryover
+            if c[1].get("clown_carryover_line"):  # older Geiru Carryover
                 return {"subject_definitions": c[1]["clown_carryover_line"]}
     return {}
 
