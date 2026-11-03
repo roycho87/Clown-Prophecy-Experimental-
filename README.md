@@ -1,14 +1,14 @@
 # Geiru Prophecy (Experimental)
 
-> Was **Clown Prophecy**. Only the names you see changed (it's named after the clown, Geiru, now, like the [Geiru Context Suite](https://github.com/roycho87/clown_context_suite)); the internal node names are the same, so saved workflows still load.
+> Was **Clown Prophecy**. Only the names you see changed (it's named after the clown, Geiru, now, like the [Geiru Context Suite](https://github.com/roycho87/geiru_context_suite)); the internal node names are the same, so saved workflows still load.
 
 ComfyUI nodes for MiniMax H3 chains that render a clean ending for each shot before the shot exists, and pin it to the back of the shot.
 
-**These nodes moved here from [Geiru Context Suite](https://github.com/roycho87/clown_context_suite).** It was moved here because it is too inconsistent and experimental to be considered a finished node. Keystone and Capstone are a much more promising direction. For long videos without degradation, use **Geiru Keystone** and **Geiru Late Lock** (or **Geiru Hybrid Windows**) in Geiru Context Suite.
+**These nodes moved here from [Geiru Context Suite](https://github.com/roycho87/geiru_context_suite).** It was moved here because it is too inconsistent and experimental to be considered a finished node. Keystone and Capstone are a much more promising direction. For long videos without degradation, use **Geiru Keystone** and **Geiru Late Lock** (or **Geiru Hybrid Windows**) in Geiru Context Suite.
 
 ## Needs Geiru Context Suite
 
-Install [Geiru Context Suite](https://github.com/roycho87/clown_context_suite) too. The workflows here use its **Geiru Context**, **Geiru Anchoring**, **Geiru Shot Counter** and **Geiru Chain** nodes. If your copy of Geiru Context Suite is older and still has the Prophecy nodes in it, update it (`git pull`) so the two packs don't clash.
+Install [Geiru Context Suite](https://github.com/roycho87/geiru_context_suite) too. The workflows here use its **Geiru Context**, **Geiru Anchoring**, **Geiru Shot Counter** and **Geiru Chain** nodes. If your copy of Geiru Context Suite is older and still has the Prophecy nodes in it, update it (`git pull`) so the two packs don't clash.
 
 ## Credits
 
@@ -152,7 +152,7 @@ With `lock_accept` on, Chain runs straight through every shot, Prophecy shots in
 
 ## Geiru Anchoring and Geiru Context
 
-Geiru Anchoring (holds Prophecy's ending at the back of the shot) and Geiru Context are in [Geiru Context Suite](https://github.com/roycho87/clown_context_suite); see its README for [their settings](https://github.com/roycho87/clown_context_suite#clown-context-and-clown-anchoring) and for [joining the clips](https://github.com/roycho87/clown_context_suite#joining-the-clips). Settings that work with Prophecy: Geiru Context `head_frames` 39, `drop_last` 17; Geiru Anchoring `tail_frames` 56, `drop_first` 17. The Anchoring frames must outnumber the Context frames.
+Geiru Anchoring (holds Prophecy's ending at the back of the shot) and Geiru Context are in [Geiru Context Suite](https://github.com/roycho87/geiru_context_suite); see its README for [their settings](https://github.com/roycho87/geiru_context_suite#clown-context-and-clown-anchoring) and for [joining the clips](https://github.com/roycho87/geiru_context_suite#joining-the-clips). Settings that work with Prophecy: Geiru Context `head_frames` 39, `drop_last` 17; Geiru Anchoring `tail_frames` 56, `drop_first` 17. The Anchoring frames must outnumber the Context frames.
 
 ## Example workflows
 
@@ -209,11 +209,11 @@ Geiru Prophecy Prompt in `ollama` mode needs a local LLM server: [Ollama](https:
 
 ## Install
 
-Install [Geiru Context Suite](https://github.com/roycho87/clown_context_suite) first, then clone this into `ComfyUI/custom_nodes/` and restart ComfyUI:
+Install [Geiru Context Suite](https://github.com/roycho87/geiru_context_suite) first, then clone this into `ComfyUI/custom_nodes/` and restart ComfyUI:
 
 ```
 cd ComfyUI/custom_nodes
-git clone https://github.com/roycho87/Clown-Prophecy-Experimental-
+git clone https://github.com/roycho87/Geiru-Prophecy-Experimental-
 ```
 
 ## License
