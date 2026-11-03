@@ -1,7 +1,7 @@
 """
 Geiru Prophecy (Experimental) for MiniMax H3
 --------------------------------------------
-Moved out of Geiru Context Suite. Needs Geiru Context Suite installed for Geiru Context, Geiru Anchoring, Clown Shot
+Moved out of Geiru Context Suite. Needs Geiru Context Suite installed for Geiru Context, Geiru Anchoring, Geiru Shot
 Counter and Geiru Chain.
 
     Geiru Prophecy Sampler  renders a clean ending for the shot before the shot exists
